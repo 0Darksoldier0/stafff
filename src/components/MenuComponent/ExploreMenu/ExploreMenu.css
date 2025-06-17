@@ -1,0 +1,60 @@
+.explore-menu {
+    padding-top: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    animation: fadeIn 1s;
+}
+
+.explore-menu h1 {
+    font-size: 80px;
+    font-weight: 500;
+    text-align: center;
+    color: rgb(51, 51, 51);
+}
+
+.explore-menu .text {
+    color: rgb(81, 81, 81);
+    font-size: 18px;
+    text-align: center;
+}
+
+.explore-menu-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+    margin: 20px 0px;
+}
+
+.explore-menu-list .inactive {
+    width: 120px;
+    height: 40px;
+    font-size: 15px;
+    background-color: white;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 20px;
+    box-shadow: 0px 0px 3px rgb(219, 219, 219);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.explore-menu-list .inactive:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.explore-menu-list .active {
+    width: 120px;
+    height: 40px;
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0px 0px 3px rgb(101, 54, 54);
+    background-color: brown;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+

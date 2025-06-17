@@ -1,0 +1,65 @@
+.new-order-container {
+    padding-top: 120px;
+    min-height: 100vh;
+    animation: fadeIn 1s;
+}
+
+.new-order {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 80px 80px;
+    width: 500px;
+    height: 500px;
+    margin: auto;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgb(220, 220, 220);
+    border-radius: 10px;
+}
+
+.new-order h1 {
+    text-align: center;
+    color: brown;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.new-order h3 {
+    color: rgb(70, 70, 70);
+    margin-bottom: 5px;
+}
+
+.new-order input {
+    width: 100%;
+}
+
+.new-order select {
+    width: 30%;
+}
+.new-order input,select {
+    height: 35px;
+    font-size: 15px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    color: rgb(60, 60, 60)
+}
+.new-order input:focus,select:focus {
+    border: 2px solid brown;
+}
+.new-order button {
+    width: 50%;
+    margin: auto;
+    height: 40px;
+    border: none;
+    background-color: brown;
+    color: white;
+    font-size: 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.new-order button:hover{
+    opacity: 0.85;
+}
