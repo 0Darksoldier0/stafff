@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './FoodItem.css'
 import { assets } from '../../../assets/assets';
 import { StoreContext } from '../../../context/StoreContext';
-// import { BACKEND_URL } from '../../../../config/constants'; // Removed: No longer needed for image URLs
+import { BACKEND_URL } from '../../../../config/constants'; // Removed: No longer needed for image URLs
 import { toast } from 'react-toastify';
 
 const FoodItem = ({ id, name, price, description, image }) => {

@@ -24,7 +24,7 @@ const Navbar = () => {
                 <p>A Hundred Tastes</p>
             </div></Link>
             {
-                token
+                token && orderId
                     ? <>
                         <ul className='navbar-menu'>
                             <Link to='/menu' className={menu === "Menu" ? "active" : "inactive"}>Menu</Link>
