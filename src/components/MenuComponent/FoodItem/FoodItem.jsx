@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './FoodItem.css'
 import { assets } from '../../../assets/assets';
 import { StoreContext } from '../../../context/StoreContext';
-import { BACKEND_URL } from '../../../../config/constants';
+// import { BACKEND_URL } from '../../../../config/constants'; // Removed: No longer needed for image URLs
 import { toast } from 'react-toastify';
 
 const FoodItem = ({ id, name, price, description, image }) => {
@@ -14,7 +14,8 @@ const FoodItem = ({ id, name, price, description, image }) => {
     return (
         <div className='food-item'>
             <div className="food-item-image-container">
-                <img className='food-item-image' src={`${BACKEND_URL}` + "/images/" + image} alt="" />
+                {/* Directly use the 'image' prop as it's now the full GCS URL */}
+                <img className='food-item-image' src={image} alt="" />
                 {
                     !cartItems[id]
                         ? <img className='add' onClick={() => token ? addToCart(id) : toast.error("Please sign in")} name="add" src={assets.add_icon_white} alt="" />

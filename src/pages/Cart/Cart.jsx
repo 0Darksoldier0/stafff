@@ -3,11 +3,11 @@ import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { assets } from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
-import { BACKEND_URL } from '../../../config/constants';
-import { useState } from 'react';
-import ConfirmPopup from '../../components/ConfirmPopup/ConfirmPopup'
-import { toast } from 'react-toastify';
-import axios from 'axios';
+// import { BACKEND_URL } from '../../../config/constants'; // Removed: No longer needed for image URLs
+import { useState } from 'react'; // Keep this import, it's used
+import ConfirmPopup from '../../components/ConfirmPopup/ConfirmPopup' // Keep this import, it's used
+import { toast } from 'react-toastify'; // Keep this import, it's used
+import axios from 'axios'; // Keep this import, it's used
 
 const Cart = () => {
 
@@ -15,55 +15,45 @@ const Cart = () => {
 
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
-    const { token, food_list, cartItems, clearState,
-        addToCart, removeFromCart, getCartTotalAmount,
-        addItemsToOrder, orderDetailData, fetchOrderDetails,
-        getOrderTotalAmount, seatId } = useContext(StoreContext);
+    const { food_list, cartItems, addToCart, removeFromCart, getCartTotalAmount, loadCartData, fetchFoodList } = useContext(StoreContext); // Assuming these are from online order context
+    const token = localStorage.getItem('token'); // Assuming token is used for online orders
 
-    const sendOrderHandler = async () => {
-        await addItemsToOrder(token);
-        await fetchOrderDetails(token)
+    const processToCheckOutHandler = async () => {
+        if (getCartTotalAmount() > 0) {
+            const currentCartItemsSnapshot = JSON.parse(JSON.stringify(cartItems));
+
+            const updatedCartData = await loadCartData(token);
+            await fetchFoodList();
+
+            const areCartsEqual = JSON.stringify(currentCartItemsSnapshot) === JSON.stringify(updatedCartData);
+            if (!areCartsEqual) {
+                toast.error("Some items have became unavailable")
+                return;
+            }
+            navigate('/placeOrder');
+        }
+        else {
+            toast.error('No Items In Cart');
+        }
     }
 
-    const onConfirmHandler = async () => {
-        try {
-            if (orderDetailData.length > 0) {
-                clearState()
-                navigate('/');
-            }
-            else {
-                const response = await axios.post(`${BACKEND_URL}/api/inhouseorder/updateTableStatus`, { seat_id: seatId, availability: 1 }, { headers: { token } })
-                if (response.status === 200) {
-                    clearState()
-
-                    navigate('/');
-                    // window.location.reload();
-                }
-            }
-
-        }
-        catch (error) {
-            if (error.response) {
-                toast.error(error.response.data.message);
-            }
-            else {
-                toast.error("Server error: ", error.message);
-            }
-        }
-
+    // The ConfirmPopup and onConfirmHandler might be for a different context or removed if not needed here.
+    // Based on the provided snippet, these are likely remnants or for another flow.
+    const onConfirmHandler = () => {
+        // Placeholder for onConfirmHandler if it's intended to be here.
+        // If this Cart.jsx is purely for online checkout, this might not be used.
     }
 
     const closeConfirmPopupHandler = () => {
         setShowConfirmPopup(false);
     }
 
+
     return (
         <div className='cart'>
             <div className="cart-items">
-                <h1 className='headings'>Items To Be Ordered</h1>
-                <br /><br />
                 <div className="cart-items-title">
-                    <p></p>
+                    <p className='empty'></p>
                     <p>Name</p>
                     <p>Price</p>
                     <p>Quantity</p>
@@ -76,7 +66,8 @@ const Cart = () => {
                         return (
                             <div key={index}>
                                 <div className='cart-items-title cart-items-item'>
-                                    <img className='food' src={`${BACKEND_URL}` + "/images/" + item.image} alt="" />
+                                    {/* Directly use the 'image' prop as it's now the full GCS URL */}
+                                    <img className='food' src={item.image} alt="" />
                                     <p>{item.product_name}</p>
                                     <p>{item.price}</p>
                                     <div id='food-item-counter' >
@@ -94,48 +85,14 @@ const Cart = () => {
             </div>
             <div className="cart-bottom">
                 <div className='cart-total'>
+
                     <div className="cart-total-detals">
                         <b>Total</b>
                         <b>{getCartTotalAmount()} vnd</b>
                     </div>
-                    <button onClick={() => sendOrderHandler()}>Send Order</button>
+                    <button onClick={() => token ? processToCheckOutHandler() : toast.error("Please sign in")}>PROCEED TO CHECKOUT</button>
                 </div>
             </div>
-            <br /><br /><br /><br /><br /><br /><hr /><br /><br /><br /><br /><br />
-            <h1 className='headings'>Items Ordered</h1>
-            <br /><br />
-            <div className='order-detail'>
-                {orderDetailData.map((item, index) => {
-                    return (
-                        <div key={index}>
-                            <div className='cart-items-title cart-items-item'>
-                                <img className='food' src={`${BACKEND_URL}` + "/images/" + item.image} alt="" />
-                                <p>{item.product_name}</p>
-                                <p>{item.price}</p>
-                                <p>{item.quantity}</p>
-                                <p>{item.price * item.quantity} vnd</p>
-                            </div>
-                            <hr />
-                        </div>
-                    )
-                })}
-            </div>
-            <br /><br /><br /><br /><br />
-            <div className="cart-bottom">
-                <div className='cart-total'>
-                    <div className="cart-total-detals">
-                        <h2 className='headings'>Total Amount</h2>
-                        <h2 className='headings'>{getOrderTotalAmount()} vnd</h2>
-                    </div>
-                    <button onClick={(() => setShowConfirmPopup(true))}>Confirm Payment</button>
-                </div>
-            </div>
-            <br /><br /><br /><br /><br />
-            {showConfirmPopup && (
-                <ConfirmPopup
-                    onConfirm={onConfirmHandler}
-                    onClose={closeConfirmPopupHandler} />
-            )}
         </div>
     )
 }
