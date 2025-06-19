@@ -75,7 +75,7 @@ const Cart = () => {
                     if (cartItems[item.product_id] > 0) {
                         return (
                             <div key={index}>
-                                <div className='cart-items-title cart-items-item'>
+                                <div className='cart-items-item'>
                                     {/* Directly use the 'image' prop as it's now the full GCS URL */}
                                     <img className='food' src={item.image} alt="" />
                                     <p>{item.product_name}</p>
@@ -109,7 +109,7 @@ const Cart = () => {
                 {orderDetailData.map((item, index) => {
                     return (
                         <div key={index}>
-                            <div className='cart-items-title cart-items-item'>
+                            <div className='cart-items-item'>
                                 {/* Directly use the 'image' prop as it's now the full GCS URL */}
                                 <img className='food' src={item.image} alt="" />
                                 <p>{item.product_name}</p>
